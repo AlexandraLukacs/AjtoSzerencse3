@@ -14,40 +14,56 @@ public class DoorLuck {
     private int csere;
     private int nemCsere;
     private int round;
+    private int carPosition; 
     
     public DoorLuck(int csere, int nemCsere, int round){
         this.csere=0;
         this.nemCsere=0;
         this.round=0;
+        randomizeCarPosition();
+    }
+   
+    private void randomizeCarPosition() {
+        Random rand = new Random();
+        carPosition = rand.nextInt(3) + 1;
     }
     
-    public void csereTarol(){
-        
+    public boolean switchDoor(int chosenDoor) {
+        round++;
+        if (chosenDoor != carPosition) {
+            csere++;
+            return true;
+        } else {
+            return false;
+        }
     }
-    
-    public void nemCsereTarol(){
-        
+
+    public boolean stayDoor(int chosenDoor) {
+        round++;
+        if (chosenDoor == carPosition) {
+            nemCsere++; 
+            return true;
+        } else {
+            return false;
+        }
     }
-    
-    public void roundTarol(){
-        
+
+    public int getCsereWins() {
+        return csere;
     }
+
     
-    public void ajtok(){
-        
+
+    public int getNemCsereWins() {
+        return nemCsere;
     }
-    
-    public void randomAjtoNyit(){
-        
+
+    public int getRounds() {
+        return round;
     }
-    
-    public void nyer(){
-        
+
+    public void resetGame() {
+        randomizeCarPosition();
     }
-    
-    public void nemNyer(){
-        
-    }
-    
-    
+
 }

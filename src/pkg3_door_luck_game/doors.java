@@ -4,17 +4,94 @@
  */
 package pkg3_door_luck_game;
 
-/**
- *
- * @author VégiDánielMárk(SZF_2
- */
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 public class doors extends javax.swing.JFrame {
 
-    /**
-     * Creates new form doors
-     */
+    private int carPosition;
+    private JButton button1, button2, button3, newGameButton;
+    private JLabel resultLabel;
+
     public doors() {
         initComponents();
+        randomizeCarPosition();
+    }
+
+    private void initComponents() {
+        button1 = new JButton("Ajtó 1");
+        button2 = new JButton("Ajtó 2");
+        button3 = new JButton("Ajtó 3");
+        newGameButton = new JButton("Új játék");
+        resultLabel = new JLabel("Válassz egy ajtót!");
+
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Három ajtó játék");
+
+         button1.addActionListener(new DoorButtonActionListener(1));
+        button2.addActionListener(new DoorButtonActionListener(2));
+        button3.addActionListener(new DoorButtonActionListener(3));
+        newGameButton.addActionListener(e -> resetGame());
+        
+        JPanel panel = new JPanel();
+        panel.add(button1);
+        panel.add(button2);
+        panel.add(button3);
+        panel.add(resultLabel);
+        panel.add(newGameButton);
+
+        add(panel);
+        pack();
+        setLocationRelativeTo(null);
+    }
+    
+        private void randomizeCarPosition() {
+            Random rand = new Random();
+            carPosition = rand.nextInt(3) + 1;// 1, 2 vagy 3 közül választunk
+    }
+
+    private void checkWin(int chosenDoor) {
+        if (chosenDoor == carPosition) {
+            resultLabel.setText("Gratulálok, megnyerted az autót!");
+        } else {
+            resultLabel.setText("Sajnálom, egy kecskét találtál.");
+        }
+        disableButtons();
+    }
+
+    private void resetGame() {
+        randomizeCarPosition();
+        resultLabel.setText("Válassz egy ajtót!");
+        enableButtons();
+    }
+
+    private void disableButtons() {
+        button1.setEnabled(false);
+        button2.setEnabled(false);
+        button3.setEnabled(false);
+    }
+
+    private void enableButtons() {
+        button1.setEnabled(true);
+        button2.setEnabled(true);
+        button3.setEnabled(true);
+    }
+
+    private class DoorButtonActionListener implements ActionListener {
+        private final int doorNumber;
+
+        public DoorButtonActionListener(int doorNumber) {
+            this.doorNumber = doorNumber;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            checkWin(doorNumber);
+        }
     }
 
     /**
